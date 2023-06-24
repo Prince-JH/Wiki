@@ -1,5 +1,5 @@
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3d7382fb-15f9-49a3-9d6f-31b94e37889b/Untitled.png)
 
+![](2023-06-24-13-31-37.png)
 ## k8s Architecture
 - 노드 세트로 구성
     - 마스터 노드
