@@ -1,4 +1,4 @@
-# java의 Garbage Collection
+# java의 GC
 
 GC 는 Heap 메모리 영역에서 더 이상 필요하지 않은 객체를 찾아 지우는 작업을 하는데, java의 gc는 'Weak generation hypothesis' 라는 가설 하에 만들어졌다.
 
