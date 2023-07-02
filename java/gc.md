@@ -3,6 +3,7 @@
 GC 는 Heap 메모리 영역에서 더 이상 필요하지 않은 객체를 찾아 지우는 작업을 하는데, java의 gc는 'Weak generation hypothesis' 라는 가설 하에 만들어졌다.
 
 [**Weak generation hypothesis**]
+
 ![](2023-06-25-00-20-22.png)
 
 대부분의 응용 프로그램들의 object 들은 생성되지 얼마 가지 않아 소멸된다는 가설
