@@ -64,15 +64,15 @@ public class AppConfig {
 ```Java
 @Component
 public class MessagePrinter {
-    final private MessageService service;
+    private final MessageService messageService;
 
     @Autowired
-    public MessagePrinter(MessageService service) {
-        this.service = service;
+    public MessagePrinter(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     public void printMessage() {
-        System.out.println(this.service.getMessage());
+        System.out.println(this.messageService.getMessage());
     }
 }
 ```
@@ -83,9 +83,12 @@ public class MessagePrinter {
 ```Java
 @RestController
 public class MyController {
+    private final MessagePrinter messagePrinter;
 
     @Autowired
-    private MessagePrinter messagePrinter;
+    public MessageController(MessagePrinter messagePrinter) {
+        this.messagePrinter = messagePrinter;
+    }
 
     @GetMapping("/messages")
     public String print() {
