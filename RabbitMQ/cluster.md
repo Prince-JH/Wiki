@@ -101,30 +101,31 @@ RabbitMQ 클러스터에서는 Disk 노드와 RAM 노드를 혼합하여 사용�
 - 클러스터 상태 확인
     - `sudo rabbitmqctl cluster_status`
     - 대시보드를 통해서도 클러스터가 맺어진 것을 확인할 수 있다.
+        ![](2023-07-07-21-18-23.png)
         
 - Quorum Queue 생성
     - mq-1을 리딩 노드로 하여 Quorum Queue 를 생성
         
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1ef78e75-a4c2-4ba4-9b48-fbb4570ca925/Untitled.png)
+        ![](2023-07-07-21-18-52.png)
         
-- 클러스터 내에 존재하는 노드들이 메시지를 공유한다.
+    - 클러스터 내에 존재하는 노드들이 메시지를 공유한다.
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e1671bdf-b1b7-41e1-83ff-89e02b49fe29/Untitled.png)
+        ![](2023-07-07-21-19-31.png)
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/09558176-ebfc-4e8d-90ce-9a10217fd219/Untitled.png)
+        ![](2023-07-07-21-20-10.png)
     
 - 테스트를 위해 mq-1 을 종료해보자.
     - online 목록에서 rabbit@mq-1 이 빠진 것을 확인할 수 있다. 메시지는 그대로 남아있다. 또한 Leader Node가 mq-2로 바뀌었다.
     - 또한, Message 가 들어온 시간이 변경되었는데, 이는 메시지가 새로운 Lead Node로 복제되는 과정에서 메시지가 재전송된 것이다. 이는 메시지가 다른 노드에 이미 복제되었지만, 새 Lead Node가 해당 메시지를 인지하지 못한 경우 발생할 수 있다.
         
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/df74b359-60cf-449f-b7da-9e54089bb150/Untitled.png)
+        ![](2023-07-07-21-20-45.png)
         
 - 다시 mq-1을 살리면
     - online 목록에 rabbit@mq-1 이 다시 들어오는 것을 확인할 수 있다.
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f355fa13-8185-4d8d-97d5-421b1ede4934/Untitled.png)
+        ![](2023-07-07-21-21-23.png)
     
 - 메시지를 consume 한다.
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/38d6f981-7f24-41e5-8976-aaff79a70bb5/Untitled.png)
+    ![](2023-07-07-21-21-38.png)
 
