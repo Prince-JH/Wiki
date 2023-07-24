@@ -47,3 +47,6 @@ Pgpool 이 제공하는 Replication mode 는 statement 기반으로 작동한다
 Pgpool 역시 SPOF(Signe Point of Failure)가 될 수 있다. 이를 위해 Pgppol 노드를 추가하여 HA를 구성해야 할 필요가 있는데, 이를 수행해 주는 것이 Watchdog이다. 
 
 기본적으로, keepalived 와 유사하게 Pgpool 인스턴스 간 heartbeat check를 통해 VIP를 이전하는 active-stand by 구조이다.
+
+## HA 구성 Example
+
