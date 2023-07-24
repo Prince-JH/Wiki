@@ -64,9 +64,6 @@ PosgreSQL 버전: 14
     - `sudo -iu postgres psql -c "ALTER USER postgres WITH PASSWORD 'test';"`
 - `pg_hba.conf` 수정
     - 디폴트 설정으로 모든 외부 connection 차단되어 있다. 외부 connection을 허용해야 한다.
-        
-        [pg_hba.conf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/70ab134f-6456-4673-9933-85e5b46da38a/pg_hba.conf)
-        
         ```bash
         host    all             all             0.0.0.0/0               md5
         host    all             all             ::/0                    md5
@@ -74,9 +71,6 @@ PosgreSQL 버전: 14
         
 - `postgresql.conf` 수정
     - `listen address`의 주석을 풀어 listen 을 허용해줘야 한다.
-        
-        [postgresql.conf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/af389937-8265-4a20-8735-f94644c53111/postgresql.conf)
-        
 
 ### Replication 설정
 
@@ -140,21 +134,18 @@ PosgreSQL 버전: 14
     - replication 프로세스가 작동 되고 있는지 마스터에서 확인한다.
         - `SELECT * FROM pg_stat_replication;`
             
-            ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d96bf67-8edf-420b-8980-bbbd028fd5e7/Untitled.png)
+            ![](2023-07-25-00-18-42.png)
             
     - WAL Streaming 방식은 물리적 복제 방식으로, 데이터베이스 레벨의 변경만을 동기화하며, **데이터베이스 생성 및 삭제와 같은 클러스터 레벨**의 DDL 작업은 동기화하지 않는다.
     - 마스터에서 테이블을 하나 생성하고, 슬레이브에도 동기화가 되었는지 확인한다.
         - 마스터
-            
-            ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8242ded0-2ab3-40e7-8f1d-1c23c4543446/Untitled.png)
+            ![](2023-07-25-00-19-20.png)
             
         - 슬레이브
-            
-            ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/abf4cd44-232e-4959-9296-597f514bf921/Untitled.png)
+            ![](2023-07-25-00-19-30.png)
             
     - 슬레이브는 **read-only**이기 때문에 슬레이브에서 Write를 시도하면 fail 이 발생한다.
-        
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6396abe4-aea6-4eab-83e7-d714c3375e7d/Untitled.png)
+        ![](2023-07-25-00-19-39.png)
         
 
 ### **Pgpool-II** 구성 ([docs](https://www.pgpool.net/docs/latest/en/html/index.html))
@@ -241,8 +232,8 @@ PosgreSQL 버전: 14
     - `sudo systemctl restart pgpool2.service`
 - 연결된 PostgreSQL 확인
     - `systemctl status pgpool2.service`
-        
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e17750b1-bfef-4d03-a89a-46c864fa8bf9/Untitled.png)
+
+        ![](2023-07-25-00-20-30.png)
         
     - 로그를 보면 `node[0]`(마스터) 는 1로 on 상태이지만, `node[1]`(슬레이브)는 0으로 off상태이다.
 - off 상태의 node 부착
@@ -251,21 +242,18 @@ PosgreSQL 버전: 14
     - `/etc/pgpool2/pcp.conf`에 다음과 `username:pasword`를 저장한다.
     - password 는 `md5`로 해싱된 값을 입력해야 하고, 해싱된 값은 `pg_md5` 명령어로 얻을 수 있다.
     - `test`를  해싱하여 저장하는 예시입니다.
-        
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/122896f6-fc6c-4d8c-a64a-1fd1f7c3cf78/Untitled.png)
+        ![](2023-07-25-00-22-31.png)
         
         ```bash
-        postgres:cd3a770c2140ba23ecb409dbbc226123a
+        postgres:098f6bcd4621d373cade4e832627b4f6
         ```
         
     - 저장을 하고 pgpool2를 재시작하면 `pcp_attach_node` 명령어를 사용할 수 있다.
-        
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/99a74934-4513-4210-8c6e-3881280c1286/Untitled.png)
+        ![](2023-07-25-00-22-50.png)
         
 - 연결된 PostgreSQL 확인
     - `load_balance_mode`를 사용했기 때문에 db 세션을 맺을 때 두 서버 중 하나에 붙는다.
-        
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d3bf4f23-4382-4c3c-82f4-108b6aab1000/Untitled.png)
+        ![](2023-07-25-00-24-17.png)
         
 - failover script 작성
     - 마스터가 다운되면 슬레이브를 마스터로 승격시킬 수 있어야 한다.
