@@ -194,7 +194,7 @@ PosgreSQL 버전: 14
     backend_application_name1 = 'server1'
     
     sr_check_user = 'postgres'
-    sr_check_password = 'makina'
+    sr_check_password = 'test'
     sr_check_database = '[DB 이름]'
     
     health_check_period = 5 # 단위 초
@@ -256,7 +256,7 @@ PosgreSQL 버전: 14
         
 - 연결된 PostgreSQL 확인
     - `load_balance_mode`를 사용했기 때문에 db 세션을 맺을 때 두 서버 중 하나에 붙는다.
-    
+
         ![](2023-07-25-00-24-17.png)
         
 - failover script 작성
