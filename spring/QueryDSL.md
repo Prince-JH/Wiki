@@ -46,7 +46,7 @@ QueryDSL 에서 묵시적 join 사용 시 `cross join`이 날아갈 수 있음, 
 - JPQL은 `from`절의 서브쿼리를 지원하지 않는다. -> PK를 커버링 인덱스로 빠르게 조회하고, 조회된 Key들로 `SELECT` 컬럼들을 IN절을 통해 후속 조회
 
 ## Update 최적화
-DirtyChecking 방식을 무분별하게 사용하면, 일괄 Update가 필요한 경우 해당 엔티티를 전부 조회하게 된다.
+DirtyChecking 방식을 무분별하게 사용하면, 일괄 Update가 필요한 경우 해당 엔티티를 전부 조회하게 된다. Queydsl.update 사용으로 해결할 수 있다.
 
 -> django의 for문 `save()`와, `update()`의 차이와 유사
 
