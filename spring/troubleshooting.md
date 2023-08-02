@@ -1,3 +1,26 @@
+## jpa가 식별자 지정 시 insert를 하기 전에 그 대상을 select 하는 현상
+jpa 에서 새 엔티티를 생성하고 저장할 때, 식별자(pk)를 직접 주게 되면 해당 데이터가 이미 존재하는지 `select`를 한 번 하게된다. 식별자 값이 `null`이라면 새로운 엔티티로 판단하고 `INSERT`를 하게 되고, `null` 이 아니라면 더티 체킹 이후 필요에 따라 `UPDATE`를 하게 된다.
+
+당연하게도, 불필요한 `select` 없이 데이터 저장을 할 수 있다. `EntityManager`를 주입 받아 사용할 수도 있지만, Spring Data JPA를 사용하는 입장에서 `EntityManager` 를 직접 다루는 일은 최대한 피하고 싶다. 이럴 때는 `Persistable` 인터페이스를 상속받아 `isNew` 메소드와 `getId` 메소드를 오버라이드 하여 해결할 수 있다.
+
+```Java
+@Entity
+public class TestEntity implements Persistable<String> {
+
+    // ...
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return /* 신규 엔티티일 때 true를 리턴하는 로직 */;
+    }
+}
+```
+
 ## Transaction marked as rollbackOnly
 트랜잭션 메소드에서 예외가 발생한 경우 해당 트랜잭션은 롤백이 될 트랜잭션으로 마킹이 된다.
 
