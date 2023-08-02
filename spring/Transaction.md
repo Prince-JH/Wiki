@@ -45,3 +45,16 @@ JPA를 사용한다면 `@Transactional`은 아래와 같은 프로세스를 타�
 `@Transactional` 이 적용되면, 해당 메소드가 종료될 때 트랜잭션이 커밋된다.
 그러나, Spring Data JPA에서 `save` 메소드는 즉시 쓰기 작업을 하지 않는다.
 메소드가 종료된 이후에 커밋이 날아가기 때문에, 메소드 내에서 발생한 `DataIntegrityViolationException` 등의 예외는 `@Transactional` 메서드의 **try-catch 블록 내에서 잡히지 않는다**.
+
+## Transaction 롤백
+트랜잭션 메소드는 에러를 마주하면 변경사항에 대해 롤백을 한다. 그런데 이것이 CheckedException을 마주했을 때와 UncheckedException을 마주했을 때가 다르다.
+
+UncheckedException의 경우에는 기존에 알던 것과 같이 롤백을 한다. 그런데 CheckedException을 마주하면 롤백하지 않는다. 
+
+당연하게도 이러한 부분들은 커스터마이징이 가능하다. `@Transactional`의 rollbackFor, noRollbackFor 등의 속성을 통해 로백을 수행하거나 수행하지 않도록 설정할 수 있다.
+```java
+@Transactional(rollbackFor = MyCheckedException.class)
+public void someMethod() {
+    // ...
+}
+```
