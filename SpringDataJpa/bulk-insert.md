@@ -6,12 +6,10 @@ Spring Data Jpa는 벌크 인서트를 지원하지 않는다. 그렇다면 save
 따라서 `save` 메소드를 반복문으로 사용했을 때 보다는 성능이 향상된다.
 
 ### SpringDataJpa는 왜 벌크인서트를 지원하지 않을까
-사실 Spring Data Jpa가 지원하지 않기 보다는, Hibernate가 지원하지 않는 것인데, 이는 Hibernate의 기본 철학인 쓰기 지연(Write-Behind) 때문이다. 
-
-쓰기 지연 때문에 마지막까지 영속성 컨텍스트에서 데이터를 가지며 flush 를 연기하게 되는데, `GenerationType.IDENTITY`방식 즉, PK 값을 auto_increment 하는 방식의 경우 실제 insert를 하기 전까지는 ID에 할당된 값을 알 수 없기 때문에 벌크 인서트가 불가하다.
+정확히 말하면 Hibernate에서 `GenerationType.IDENTITY`방식을 사용할 때 벌크인서트를 지원하지 않는다. 해당 방식의 경우 PK 값 채택을 DBMS에 위임하기 떄문에 실제 insert를 하기 전까지는 PK에 할당된 값을 알 수 없기 때문이다.
 
 ### 벌크인서트를 하려면 어떻게 해야하나
-방법은 다양하겠지만(Pure JDBC, ) 주로 Jdbc Template을 사용하여 벌크 인서트를 하는듯 하다.
+방법은 다양하겠지만(Pure JDBC 등) 주로 Jdbc Temㄱplate을 사용하여 벌크 인서트를 하는듯 하다.
 
 또는, `GenerationType.SEQUENCE` 방식을 사용하고 `spring.jpa.properties.hibernate.jdbc.batch_size` 옵션을 주어 벌크 인서트를 적용할 수도 있다.
 
