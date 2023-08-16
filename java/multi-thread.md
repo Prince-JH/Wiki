@@ -12,6 +12,7 @@ LinkedBlockingQueue의 주요 특징은 다음과 같다.
 - 옵션으로 용량 제한: LinkedBlockingQueue를 생성할 때, 큐의 최대 크기를 지정할 수 있다. 크기를 지정하지 않으면 Integer.MAX_VALUE가 기본값으로 사용되어 사실상 무제한 크기로 동작한다.
 
 - FIFO (First-In-First-Out): LinkedBlockingQueue는 FIFO 데이터 구조
+
 ```Java
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -31,4 +32,15 @@ public class Example {
         // 큐의 상태 출력
         System.out.println("Queue contents: " + queue);
     }
-}```
+}
+```
+
+
+## Thread starvation or clock leap detected 
+멀티 쓰레딩 작업 중에 아래와 같은 메시지가 발생했다.
+
+`com.zaxxer.hikari.pool.HikariPool : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m30s283ms).` 
+
+찾아 보니, Thread starvation 현상이 발생한 것은 아니고, 로컬에서 실행하는 경우 PC가 sleep 에 빠진 경우 발생하는 증상이었다.
+
+참고) https://stackoverflow.com/questions/38703876/log-warning-thread-starvation-or-clock-leap-detected-housekeeper-delta-springh
