@@ -41,7 +41,7 @@ class TestEntity(
     var colorTheme: String? = null,
 
     @Column(name = "font_size")
-    var fontSize: Byte? = null,
+    var fontSize: Byte? = null
 )
 ```
 
@@ -53,3 +53,27 @@ val newTest = TestEntity(
 ```
 이는 default 값들이 INSERT 시에 명시적으로 지정하지 않은 경우에만 적용되는데, JPA는 prepared statement를 사용하여 Entity에 정의한 값(null)을 바인딩하여 INSERT 하기 때문이다.
 따라서, 스키마의 default 값을 Entity에도 설정해줘야 한다. ex) var orientation: String? = "1"
+
+### `@DynamicInsert`, `@DynamicUpdate`
+위의 문제를 Entity에 default 값을 주지 않고 해결할 수 있는 방법이다.
+
+`@DynamicInsert`는 INSERT 구문 생성 시점에 null이 아닌 컬럼들만 포함하며, `@DynamicUpdate`는 UPDATE 구문 생성 시점에 null이 아닌 컬럼만(변경된 값만) 포함한다.
+
+```kotlin
+@DynamicInsert
+@DynamicUpdate
+@Entity
+@Table(name = "test")
+class TestEntity(
+    @Id
+    @Column(name = "seq")
+    var seq: Long? = null,
+    ...
+)
+```
+
+다만 위와 같은 방식은, 어노테이션의 이름으로도 알 수 있듯이 쿼리를 **동적으로** 만들기 때문에 prepared statement의 이점인 **빠른 쿼리 실행 속도**는 더뎌질 수 밖에 없다.
+
+또 한가지 주의해야 할 것은, 엔티티를 save하면 DB에는 default 값이 저장되지만 애플리케이션의 영속성 내에서는 여전히 null로 남아있다는 것이다.
+
+따라서 경우에 따라, 생성 이후에 해당 엔티티의 영속 컨텍스트를 갱신해야 할 수 있다.
