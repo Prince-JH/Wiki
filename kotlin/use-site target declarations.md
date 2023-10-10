@@ -1,4 +1,4 @@
-## `@field`
+## use-site target declarations
 
 다음과 같은 클래스에서 tempField가 null이 불가하도록 Bean Validation을 걸어주고 싶을 때, `@NotNull`과 `@field:NotNull`의 차이는 뭘까? 
 
@@ -19,3 +19,13 @@ Java Spring을 사용했다면 `@NotNull`에 익숙할 것이다.
 - 세터
 
 여기에 그냥 `@NotNull`만 선언하면 해당 어노테이션이 정확히 어디에 적용되어야 하는지 알수 없다. 따라서, 어떤 수준에 NotNull을 걸어 주는지 명시가 필요하다.
+
+`@NotNull` 뿐 아니라 다양한 옵션이 존재하며, 필드 뿐 아니라 게터 세터에도 적용할 수 있다.
+
+```kotlin
+class TempClass(
+    @get:NotNull
+    @field:Size(min = 1, max = 20)
+    var tempField:String
+)
+```
